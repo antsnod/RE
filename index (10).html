@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trading—Floor · Personal investing intelligence</title>
+<meta name="description" content="The market, made personal. Trading-Floor profiles you and every security, then scores the fit. Join the waitlist.">
+<meta property="og:title" content="Trading—Floor · Personal investing intelligence">
+<meta property="og:description" content="The market, made personal. We profile you and every security, then score the fit. Join the waitlist.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4EFE6; --paper-2:#ECE6DA; --paper-3:#FAF6EE;
+  --ink:#16130E; --ink-2:#221C14;
+  --red:#C8442A; --red-2:#B33A22;
+  --green:#2E6B4D; --amber:#C68B3C; --amber-2:#D9A85C;
+  --fg:#16130E; --fg-2:rgba(22,19,14,.62); --fg-3:rgba(22,19,14,.42);
+  --hair:rgba(22,19,14,.13); --hair-2:rgba(22,19,14,.22);
+  --disp:'Newsreader',Georgia,serif;
+  --sans:'Geist',-apple-system,system-ui,sans-serif;
+  --mono:'Geist Mono','SF Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  --max:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper); color:var(--fg); font-family:var(--sans); font-weight:400; line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+
+/* ----- living background ----- */
+#bg{position:fixed; inset:0; z-index:0; pointer-events:none}
+.blob{position:fixed; z-index:0; border-radius:50%; filter:blur(70px); pointer-events:none; opacity:.55}
+.blob.b1{width:60vw; height:60vw; right:-15vw; top:-20vw; background:radial-gradient(circle,rgba(214,168,92,.5),transparent 65%); animation:drift1 26s ease-in-out infinite}
+.blob.b2{width:55vw; height:55vw; left:-20vw; bottom:-18vw; background:radial-gradient(circle,rgba(46,107,77,.32),transparent 65%); animation:drift2 32s ease-in-out infinite}
+.blob.b3{width:38vw; height:38vw; left:35vw; top:30vh; background:radial-gradient(circle,rgba(200,68,42,.16),transparent 60%); animation:drift3 38s ease-in-out infinite}
+@keyframes drift1{50%{transform:translate(-6vw,6vh) scale(1.12)}}
+@keyframes drift2{50%{transform:translate(7vw,-5vh) scale(1.1)}}
+@keyframes drift3{50%{transform:translate(-9vw,8vh) scale(.9)}}
+body::after{content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.wrap{max-width:var(--max); margin:0 auto; padding:0 28px; position:relative; z-index:1}
+nav,header,section,footer{position:relative; z-index:1}
+a{color:inherit; text-decoration:none}
+em{font-style:italic; color:var(--red); font-weight:inherit}
+.mono{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--fg-3)}
+.serif{font-family:var(--disp)}
+
+/* nav */
+nav{position:fixed; top:0; left:0; right:0; z-index:50; transition:.4s var(--ease)}
+nav .bar{max-width:var(--max); margin:0 auto; padding:23px 28px; display:flex; align-items:center; justify-content:space-between}
+nav.scrolled{background:rgba(244,239,230,.82); backdrop-filter:saturate(140%) blur(14px); -webkit-backdrop-filter:saturate(140%) blur(14px); border-bottom:1px solid var(--hair)}
+nav .btn{padding:13px 27px; font-size:15.5px}
+.brand{display:flex; align-items:center; gap:12px; font-family:var(--disp); font-size:27px; letter-spacing:-.005em; cursor:pointer; line-height:1}
+.brand svg{width:23px; height:24px; display:block; flex:none}
+.brand .dash{color:var(--red)}
+.btn{display:inline-flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:500; font-size:14.5px; padding:11px 20px; border-radius:100px; border:1px solid var(--ink); background:var(--ink); color:var(--paper); cursor:pointer; transition:.25s var(--ease); white-space:nowrap}
+.btn:hover{transform:translateY(-2px); box-shadow:0 10px 24px rgba(22,19,14,.18)}
+.btn.red{background:var(--red); border-color:var(--red)}
+.btn .arr{transition:.25s var(--ease)}
+.btn:hover .arr{transform:translateX(3px)}
+
+/* hero */
+.hero{padding:150px 0 64px}
+.hero .grid{display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center}
+.eyebrow{margin-bottom:24px}
+h1.headline{font-family:var(--disp); font-weight:400; font-size:clamp(46px,7.4vw,92px); line-height:.97; letter-spacing:-.025em}
+.headline .line{display:block; overflow:hidden; padding-bottom:.04em}
+.headline .line>span{display:block; transform:translateY(112%); animation:lineUp 1s var(--ease) forwards}
+.headline .line:nth-child(1)>span{animation-delay:.12s}
+.headline .line:nth-child(2)>span{animation-delay:.24s}
+@keyframes lineUp{to{transform:none}}
+.hero p.lede{font-size:clamp(17px,1.5vw,20px); color:var(--fg-2); max-width:30em; margin:26px 0 32px; line-height:1.5}
+.hero .cta-row{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+.hero .note{font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; color:var(--fg-3); text-transform:uppercase}
+.triplet{display:flex; gap:30px; margin-top:50px; flex-wrap:wrap}
+.triplet span{font-family:var(--disp); font-style:italic; font-size:clamp(20px,2.2vw,27px); color:var(--ink); position:relative; opacity:.92}
+.triplet span::before{content:"·"; color:var(--red); margin-right:18px; font-style:normal}
+.triplet span:first-child::before{display:none}
+
+/* phone + floating chips */
+.phonewrap{display:flex; justify-content:center; perspective:1400px; position:relative}
+.phone{width:300px; height:610px; border-radius:46px; background:var(--ink); padding:11px; box-shadow:0 40px 90px -30px rgba(22,19,14,.55), 0 0 0 1px rgba(22,19,14,.4); position:relative; transform:rotateY(-13deg) rotateX(3deg) rotate(1deg); animation:bob 7s ease-in-out infinite; transition:transform .9s var(--ease)}
+.phone:hover{transform:rotateY(-5deg) rotateX(1deg)}
+@keyframes bob{50%{transform:rotateY(-13deg) rotateX(3deg) rotate(1deg) translateY(-12px)}}
+.screen{width:100%; height:100%; border-radius:36px; background:var(--paper); overflow:hidden; position:relative; display:flex; flex-direction:column}
+.island{position:absolute; top:13px; left:50%; transform:translateX(-50%); width:92px; height:26px; background:var(--ink); border-radius:16px; z-index:5}
+.statusbar{display:flex; justify-content:space-between; padding:15px 24px 0; font-family:var(--mono); font-size:11px; color:var(--fg-2)}
+.scr-body{padding:40px 20px 0; flex:1; display:flex; flex-direction:column; gap:13px; overflow:hidden}
+.scr-eyebrow{font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--red)}
+.scr-take{background:var(--paper-3); border:1px solid var(--hair); border-radius:16px; padding:13px 14px}
+.scr-take p{font-family:var(--disp); font-size:14px; line-height:1.38; color:var(--ink)}
+.scr-bal{font-family:var(--disp); font-size:32px; letter-spacing:-.02em}
+.scr-bal small{font-family:var(--sans); font-size:12px; color:var(--green); display:block; letter-spacing:0}
+.spark{width:100%; height:42px; display:block}
+.spark polyline{stroke-dasharray:600; stroke-dashoffset:600; animation:draw 2.2s var(--ease) .6s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pick{display:flex; align-items:center; justify-content:space-between; padding:10px 13px; border:1px solid var(--hair); border-radius:13px; background:var(--paper-3)}
+.pick .t{font-family:var(--mono); font-size:12px; font-weight:500}
+.pick .fit{font-family:var(--mono); font-size:10px; color:var(--green); background:rgba(46,107,77,.1); padding:3px 8px; border-radius:100px}
+.tabbar{display:flex; justify-content:space-around; padding:12px 0 16px; border-top:1px solid var(--hair); margin-top:auto}
+.tabbar i{width:20px; height:20px; border-radius:6px; background:var(--hair-2); display:block}
+.tabbar i.on{background:var(--red)}
+.fchip{position:absolute; font-family:var(--mono); font-size:12.5px; font-weight:500; padding:9px 14px; border-radius:100px; background:rgba(250,246,238,.92); backdrop-filter:blur(6px); border:1px solid var(--hair); box-shadow:0 14px 30px -16px rgba(22,19,14,.4); z-index:4}
+.fchip.g{color:var(--green); top:14%; left:2%; animation:float1 6s ease-in-out infinite}
+.fchip.r{color:var(--red); bottom:16%; right:0%; animation:float2 7s ease-in-out infinite}
+@keyframes float1{50%{transform:translateY(-14px)}}
+@keyframes float2{50%{transform:translateY(12px)}}
+
+/* statement */
+.statement{padding:104px 0; text-align:center}
+.statement h2{font-family:var(--disp); font-weight:400; font-size:clamp(32px,5vw,62px); line-height:1.04; letter-spacing:-.02em; max-width:18em; margin:0 auto}
+.statement .sub{color:var(--fg-2); margin-top:24px; font-size:17px; max-width:34em; margin-left:auto; margin-right:auto}
+
+/* secret sauce engine */
+.sauce{padding:60px 0 30px; text-align:center}
+.sauce h2{font-family:var(--disp); font-weight:400; font-size:clamp(30px,4.6vw,56px); line-height:1.03; letter-spacing:-.02em; max-width:16em; margin:14px auto 0}
+.sauce .sub{color:var(--fg-2); font-size:17px; max-width:36em; margin:22px auto 0}
+.engine{display:grid; grid-template-columns:1fr 90px auto 90px 1fr; align-items:center; gap:0; margin:64px auto 0; max-width:980px}
+.enode{border:1px solid var(--hair); background:rgba(250,246,238,.7); border-radius:18px; padding:22px 20px; text-align:left; box-shadow:0 24px 50px -42px rgba(22,19,14,.5)}
+.enode .lab{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--red); margin-bottom:14px}
+.enode ul{list-style:none}
+.enode li{font-family:var(--disp); font-size:18px; padding:7px 0; border-bottom:1px solid var(--hair); color:var(--ink)}
+.enode li:last-child{border-bottom:0}
+.conn{position:relative; height:2px; background:var(--hair-2); align-self:center}
+.conn .pulse{position:absolute; top:-3.5px; width:9px; height:9px; border-radius:50%; background:var(--red); box-shadow:0 0 10px rgba(200,68,42,.7)}
+.conn.l .pulse{animation:travelR 2.6s linear infinite}
+.conn.r .pulse{animation:travelL 2.6s linear infinite}
+@keyframes travelR{from{left:-2px;opacity:0}10%{opacity:1}90%{opacity:1}to{left:100%;opacity:0}}
+@keyframes travelL{from{left:100%;opacity:0}10%{opacity:1}90%{opacity:1}to{left:-2px;opacity:0}}
+.efit{width:128px; height:128px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; background:var(--ink); color:var(--paper); margin:0 auto}
+.efit::before{content:""; position:absolute; inset:-7px; border-radius:50%; background:conic-gradient(var(--red),var(--amber),var(--green),var(--red)); animation:spin 7s linear infinite; z-index:-1; opacity:.9}
+@keyframes spin{to{transform:rotate(360deg)}}
+.efit .n{font-family:var(--disp); font-size:34px; line-height:1}
+.efit .l{font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; opacity:.7; margin-top:3px}
+
+/* matrix */
+.why{padding:90px 0}
+.why .head{text-align:center; max-width:20em; margin:0 auto 50px}
+.why h2{font-family:var(--disp); font-weight:400; font-size:clamp(30px,4.6vw,56px); line-height:1.03; letter-spacing:-.02em}
+.mxwrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.matrix{min-width:680px; border:1px solid var(--hair); border-radius:20px; overflow:hidden; background:rgba(250,246,238,.5)}
+.mxrow{display:grid; grid-template-columns:1.7fr 1fr 1fr 1fr 1.05fr; align-items:stretch}
+.mxrow + .mxrow{border-top:1px solid var(--hair)}
+.mxrow .c{padding:17px 16px; display:flex; align-items:center; justify-content:center; font-size:14px; text-align:center}
+.mxrow .c.cap{justify-content:flex-start; text-align:left; font-family:var(--disp); font-size:17px; color:var(--ink)}
+.mxhead .c{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-2); padding-top:20px; padding-bottom:20px}
+.mxhead{background:rgba(22,19,14,.03)}
+.col-tf{background:rgba(200,68,42,.07); border-left:1px solid rgba(200,68,42,.25); border-right:1px solid rgba(200,68,42,.25)}
+.mxhead .col-tf{color:var(--red); font-weight:500}
+.mark{font-family:var(--sans); font-size:18px; line-height:1}
+.mark.no{color:var(--fg-3)}
+.mark.yes{color:var(--green)}
+.mark.tf{color:var(--red); font-weight:600; transform:scale(.4); opacity:0}
+.matrix.shown .mark.tf{transform:scale(1); opacity:1; transition:transform .5s var(--ease), opacity .5s var(--ease)}
+.matrix.shown .mxrow:nth-child(2) .mark.tf{transition-delay:.05s}
+.matrix.shown .mxrow:nth-child(3) .mark.tf{transition-delay:.13s}
+.matrix.shown .mxrow:nth-child(4) .mark.tf{transition-delay:.21s}
+.matrix.shown .mxrow:nth-child(5) .mark.tf{transition-delay:.29s}
+.matrix.shown .mxrow:nth-child(6) .mark.tf{transition-delay:.37s}
+.why .foot{text-align:center; font-family:var(--disp); font-style:italic; font-size:clamp(18px,2.2vw,24px); margin-top:34px; color:var(--ink)}
+
+/* features */
+.feat{padding:56px 0}
+.feat .row{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center}
+.feat .row.flip .copy{order:2}
+.feat h3{font-family:var(--disp); font-weight:400; font-size:clamp(28px,3.6vw,44px); line-height:1.05; letter-spacing:-.02em; margin:18px 0 18px}
+.feat p{color:var(--fg-2); font-size:17px; max-width:30em; line-height:1.55}
+.feat .copy .mono{margin-bottom:6px; display:block}
+.mock{border-radius:22px; border:1px solid var(--hair); background:rgba(250,246,238,.78); padding:26px; min-height:330px; box-shadow:0 30px 60px -40px rgba(22,19,14,.4); display:flex; flex-direction:column; gap:14px; justify-content:center; transition:transform .5s var(--ease), box-shadow .5s var(--ease)}
+.mock:hover{transform:translateY(-6px); box-shadow:0 44px 80px -46px rgba(22,19,14,.5)}
+.mock .m-eyebrow{font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--red)}
+.mock .m-title{font-family:var(--disp); font-size:21px; line-height:1.2}
+.gauge{display:flex; align-items:baseline; gap:10px}
+.gauge .big{font-family:var(--disp); font-size:62px; line-height:1; color:var(--ink)}
+.gauge .max{font-family:var(--mono); font-size:13px; color:var(--fg-3)}
+.bar{height:9px; border-radius:100px; background:var(--paper-2); overflow:hidden}
+.bar > i{display:block; height:100%; border-radius:100px; width:0; transition:width 1.1s var(--ease)}
+.reveal.in .bar > i{width:var(--w,42%)}
+.mrow{display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--hair); font-size:14px}
+.mrow:last-child{border-bottom:0}
+.mrow .lbl{font-family:var(--mono); font-size:12px; color:var(--fg-2)}
+.mrow .val{font-family:var(--disp); font-size:18px}
+.chip{display:inline-block; font-family:var(--mono); font-size:11px; padding:5px 11px; border-radius:100px; border:1px solid var(--hair-2); color:var(--fg-2); margin:3px 4px 3px 0}
+.chip.on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+
+/* who */
+.who{padding:96px 0}
+.who .lead{max-width:24em}
+.who h2{font-family:var(--disp); font-weight:400; font-size:clamp(30px,4.4vw,54px); line-height:1.03; letter-spacing:-.02em; margin:16px 0 20px}
+.who p{color:var(--fg-2); font-size:17px; max-width:34em}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:54px}
+.stat .n{font-family:var(--disp); font-size:clamp(46px,5.5vw,68px); line-height:1; letter-spacing:-.02em}
+.stat .n.r{color:var(--red)} .stat .n.g{color:var(--green)} .stat .n.a{color:var(--amber)}
+.stat .c{color:var(--fg-2); font-size:14px; margin-top:10px; max-width:15em}
+.mentality{font-family:var(--disp); font-style:italic; font-size:clamp(20px,2.4vw,28px); margin-top:50px; color:var(--ink); max-width:20em}
+
+/* how */
+.how{padding:40px 0 96px}
+.how .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:22px}
+.step{padding-top:24px; border-top:2px solid var(--ink)}
+.step .num{font-family:var(--mono); font-size:12px; color:var(--red); letter-spacing:.1em}
+.step h4{font-family:var(--disp); font-weight:400; font-size:23px; margin:12px 0 8px}
+.step p{color:var(--fg-2); font-size:14px}
+
+/* join */
+.join{padding:110px 0 124px; text-align:center; position:relative}
+.join h2{font-family:var(--disp); font-weight:400; font-size:clamp(40px,6.4vw,82px); line-height:1; letter-spacing:-.025em}
+.join p{color:var(--fg-2); font-size:18px; margin:24px auto 38px; max-width:30em}
+form#wlf{display:grid; grid-template-columns:1fr 1fr; gap:13px; max-width:560px; margin:0 auto; text-align:left}
+form#wlf .full{grid-column:1 / -1}
+.field{display:flex; flex-direction:column}
+form#wlf label{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-3); margin:0 0 7px 18px}
+form#wlf input, form#wlf select{width:100%; font-family:var(--sans); font-size:15.5px; padding:15px 22px; border-radius:100px; border:1px solid var(--hair-2); background:rgba(250,246,238,.92); color:var(--ink); outline:none; transition:.22s var(--ease); -webkit-appearance:none; appearance:none}
+form#wlf select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23857A64' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 20px center; padding-right:42px; cursor:pointer}
+form#wlf input::placeholder{color:var(--fg-3)}
+form#wlf input:focus, form#wlf select:focus{border-color:var(--ink); box-shadow:0 0 0 4px rgba(22,19,14,.07)}
+form#wlf .btn{width:100%; justify-content:center; padding:16px 26px; font-size:16px; margin-top:4px}
+@media(max-width:560px){form#wlf{grid-template-columns:1fr}}
+.ferr{font-family:var(--mono); font-size:12px; color:var(--red); text-align:center; margin-top:6px}
+form#wlf .ferr{grid-column:1 / -1}
+.join .tiny{font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--fg-3); margin-top:20px; text-transform:uppercase}
+.wlok{font-family:var(--disp); font-size:24px; padding:18px 0; color:var(--green)}
+.wlok span{display:block; font-family:var(--sans); font-size:14px; color:var(--fg-2); margin-top:8px}
+
+/* contact */
+.contact{padding:96px 0; border-top:1px solid var(--hair)}
+.contact .grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start}
+.contact h2{font-family:var(--disp); font-weight:400; font-size:clamp(34px,5vw,60px); line-height:1.02; letter-spacing:-.02em; margin:14px 0 18px}
+.contact p{color:var(--fg-2); font-size:17px; max-width:30em; line-height:1.55}
+.contact .emails{margin-top:28px; display:flex; flex-direction:column; gap:16px}
+.contact .emails a{display:flex; flex-direction:column; gap:3px; width:max-content}
+.contact .emails a b{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--red); font-weight:500}
+.contact .emails a em{font-family:var(--disp); font-style:normal; font-size:20px; color:var(--ink); transition:.2s var(--ease)}
+.contact .emails a:hover em{color:var(--red)}
+form#cf{display:flex; flex-direction:column; gap:13px}
+form#cf input, form#cf textarea{width:100%; font-family:var(--sans); font-size:15.5px; padding:15px 22px; border:1px solid var(--hair-2); background:rgba(250,246,238,.92); color:var(--ink); outline:none; transition:.22s var(--ease)}
+form#cf input{border-radius:100px}
+form#cf textarea{border-radius:22px; min-height:128px; resize:vertical; line-height:1.5}
+form#cf input::placeholder, form#cf textarea::placeholder{color:var(--fg-3)}
+form#cf input:focus, form#cf textarea:focus{border-color:var(--ink); box-shadow:0 0 0 4px rgba(22,19,14,.07)}
+form#cf .btn{align-self:flex-start; padding:15px 28px; font-size:16px}
+.cfok{font-family:var(--disp); font-size:23px; color:var(--green); padding:14px 0}
+.cfok span{display:block; font-family:var(--sans); font-size:14px; color:var(--fg-2); margin-top:6px}
+@media(max-width:880px){.contact .grid{grid-template-columns:1fr; gap:40px}}
+
+/* footer */
+footer{border-top:1px solid var(--hair); padding:56px 0 44px}
+footer .top{display:flex; justify-content:space-between; align-items:flex-start; gap:30px; flex-wrap:wrap}
+footer .brand{font-size:24px}
+footer .tag{font-family:var(--disp); font-style:italic; color:var(--fg-2); margin-top:12px; font-size:17px}
+footer .links{display:flex; gap:26px; font-size:14px; color:var(--fg-2); flex-wrap:wrap}
+footer .links a{cursor:pointer}
+footer .links a:hover{color:var(--ink)}
+.disclaimer{margin-top:40px; padding-top:24px; border-top:1px solid var(--hair); font-size:12px; color:var(--fg-3); line-height:1.6; max-width:60em}
+footer .copy{font-family:var(--mono); font-size:11px; color:var(--fg-3); margin-top:18px; letter-spacing:.05em}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(22px)}
+.reveal.in{opacity:1; transform:none; transition:opacity .9s var(--ease), transform .9s var(--ease)}
+
+@media(max-width:880px){
+  .hero{padding:118px 0 36px}
+  .hero .grid{grid-template-columns:1fr; gap:48px}
+  .phonewrap{order:-1}
+  .phone{animation:none; transform:none; width:268px; height:544px}
+  .phone:hover{transform:none}
+  .feat .row{grid-template-columns:1fr; gap:34px}
+  .feat .row.flip .copy{order:0}
+  .stats{grid-template-columns:1fr; gap:30px}
+  .how .steps{grid-template-columns:1fr 1fr; gap:30px}
+  .engine{grid-template-columns:1fr; gap:18px; max-width:420px}
+  .conn{display:none}
+  .efit{order:0}
+}
+@media(max-width:520px){
+  .wrap{padding:0 20px} nav .bar{padding:16px 20px}
+  .how .steps{grid-template-columns:1fr}
+  .triplet{flex-direction:column; gap:6px}
+  .triplet span::before{display:none}
+  .fchip{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important; transition:none!important; scroll-behavior:auto!important}
+  .reveal{opacity:1; transform:none}
+  .phone{transform:none}
+  .headline .line>span{transform:none}
+  .spark polyline{stroke-dashoffset:0}
+  .mark.tf{opacity:1; transform:none}
+  .bar>i{width:var(--w,42%)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<nav id="nav"><div class="bar">
+  <span class="brand" data-goto="#top" aria-label="Trading-Floor home">
+    <svg viewBox="14 22 92 92" aria-hidden="true"><path d="M 18 26 L 102 26 L 96 38 L 24 38 Z" fill="#16130E"/><path d="M 60 38 L 69 52 L 60 110 L 51 52 Z" fill="#16130E"/></svg>
+    Trading<span class="dash">—</span>Floor
+  </span>
+  <button class="btn" data-goto="#join">Join the waitlist</button>
+</div></nav>
+
+<span id="top"></span>
+
+<header class="hero"><div class="wrap"><div class="grid">
+  <div class="copy">
+    <div class="mono eyebrow">// Personal investing intelligence</div>
+    <h1 class="headline"><span class="line"><span>The market,</span></span><span class="line"><span>made <em>personal</em>.</span></span></h1>
+    <p class="lede">A personal investing platform that profiles you <em>and</em> every security — then scores the fit, builds the portfolio, and guides every move.</p>
+    <div class="cta-row">
+      <button class="btn red" data-goto="#join">Join the waitlist <span class="arr">→</span></button>
+      <span class="note">Early crew forming</span>
+    </div>
+    <div class="triplet"><span>Profile</span><span>Match</span><span>Grow</span></div>
+  </div>
+  <div class="phonewrap">
+    <div class="fchip g">+3.1% this week</div>
+    <div class="fchip r">94% fit · VOO</div>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="statusbar"><span>9:41</span><span>● ▮▮▮</span></div>
+      <div class="scr-body">
+        <div class="scr-eyebrow">// From the floor</div>
+        <div class="scr-take"><p>“You're up 3.1% this week. Tech is now 36% of your book — a touch heavy for your plan. Nothing to do today.”</p></div>
+        <div class="scr-bal">$48,210<small>+$1,452 this month · on track</small></div>
+        <svg class="spark" viewBox="0 0 260 42" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,34 30,31 60,33 90,25 120,27 150,18 180,21 210,12 240,14 260,7" fill="none" stroke="#C8442A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="scr-eyebrow">// Matched to you · 06</div>
+        <div class="pick"><span class="t">VOO</span><span class="fit">94% fit</span></div>
+        <div class="pick"><span class="t">AAPL</span><span class="fit">88% fit</span></div>
+        <div class="tabbar"><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+    </div></div>
+  </div>
+</div></div></header>
+
+<section class="statement"><div class="wrap reveal">
+  <h2 class="serif">We profile <em>you</em> — and every security against you.</h2>
+  <p class="sub">Two-sided matching is the engine. Not “is this stock good?” but “does this fit <em>your</em> goals, your risk, your timeline?” — the question a private advisor asks, now for everyone.</p>
+</div></section>
+
+<!-- SECRET SAUCE -->
+<section class="sauce"><div class="wrap reveal">
+  <span class="mono">// The secret sauce</span>
+  <h2 class="serif">Everyone else knows the market. We know <em>you</em>, too.</h2>
+  <p class="sub">Other tools profile the stock. A rare advisor profiles the person. We're the only one that profiles <em>both</em> — and scores the fit between them. That two-sided match is the whole moat.</p>
+  <div class="engine">
+    <div class="enode">
+      <div class="lab">// You</div>
+      <ul><li>Goals</li><li>Risk tolerance</li><li>Time horizon</li><li>Behavior</li></ul>
+    </div>
+    <div class="conn l"><span class="pulse"></span></div>
+    <div class="efit"><span class="n serif">94</span><span class="l">fit</span></div>
+    <div class="conn r"><span class="pulse"></span></div>
+    <div class="enode">
+      <div class="lab">// Every security</div>
+      <ul><li>Volatility</li><li>Valuation</li><li>Sector &amp; factor</li><li>Momentum</li></ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- WHY / MATRIX -->
+<section class="why"><div class="wrap reveal">
+  <div class="head"><span class="mono">// Why Trading-Floor</span><h2 class="serif">The only one that does <em>all</em> of it.</h2></div>
+  <div class="mxwrap"><div class="matrix" id="matrix">
+    <div class="mxrow mxhead">
+      <div class="c cap">Capability</div>
+      <div class="c">Brokerages</div>
+      <div class="c">Robo-advisors</div>
+      <div class="c">Human advisors</div>
+      <div class="c col-tf">Trading-Floor</div>
+    </div>
+    <div class="mxrow">
+      <div class="c cap">Personalized to the individual</div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark yes">✓</span></div>
+      <div class="c col-tf"><span class="mark tf">✓</span></div>
+    </div>
+    <div class="mxrow">
+      <div class="c cap">Scores every security to <em>your</em> fit</div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c col-tf"><span class="mark tf">✓</span></div>
+    </div>
+    <div class="mxrow">
+      <div class="c cap">Behavioral guardrails</div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c col-tf"><span class="mark tf">✓</span></div>
+    </div>
+    <div class="mxrow">
+      <div class="c cap">No minimum · grows with you</div>
+      <div class="c"><span class="mark yes">✓</span></div>
+      <div class="c"><span class="mark yes">✓</span></div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c col-tf"><span class="mark tf">✓</span></div>
+    </div>
+    <div class="mxrow">
+      <div class="c cap">Fiduciary alignment</div>
+      <div class="c"><span class="mark no">–</span></div>
+      <div class="c"><span class="mark yes">✓</span></div>
+      <div class="c"><span class="mark yes">✓</span></div>
+      <div class="c col-tf"><span class="mark tf">✓</span></div>
+    </div>
+  </div></div>
+  <p class="foot">Same row, one column fills it. That column is us.</p>
+</div></section>
+
+<!-- FEATURES -->
+<section class="feat"><div class="wrap"><div class="row reveal">
+  <div class="copy">
+    <span class="mono">// Fit, not noise</span>
+    <h3 class="serif">Every security, scored against <em>you</em>.</h3>
+    <p>We don't just flag what's popular. We score how well each stock and fund fits your profile — so every move is measured against the only benchmark that matters: yours.</p>
+  </div>
+  <div class="mock">
+    <div class="m-eyebrow">// My take · sample</div>
+    <div class="m-title serif">Fit score</div>
+    <div class="gauge"><span class="big serif">42</span><span class="max">/ 100 for your profile</span></div>
+    <div class="bar"><i style="--w:42%;background:var(--amber)"></i></div>
+    <div class="mrow"><span class="lbl">Aligned with horizon</span><span class="val" style="color:var(--green)">Yes</span></div>
+    <div class="mrow"><span class="lbl">Risk vs your plan</span><span class="val" style="color:var(--red)">High</span></div>
+    <div class="mrow"><span class="lbl">Suggested weight</span><span class="val">≤ 2.4%</span></div>
+  </div>
+</div></div></section>
+
+<section class="feat"><div class="wrap"><div class="row flip reveal">
+  <div class="copy">
+    <span class="mono">// Your portfolio</span>
+    <h3 class="serif">A portfolio that's actually <em>yours</em>.</h3>
+    <p>Built around your profile and managed over time — clear allocations, drift alerts when something gets heavy, and a next move you can understand. Not a one-size model bucket.</p>
+  </div>
+  <div class="mock">
+    <div class="m-eyebrow">// Portfolio · allocation</div>
+    <div class="mrow"><span class="lbl">Tech</span><span class="val">36% &nbsp;<small style="font-family:var(--mono);font-size:11px;color:var(--red)">· trim 3pp</small></span></div>
+    <div class="mrow"><span class="lbl">Index funds</span><span class="val">31%</span></div>
+    <div class="mrow"><span class="lbl">Dividend</span><span class="val">18%</span></div>
+    <div class="mrow"><span class="lbl">Cash</span><span class="val">15%</span></div>
+    <div style="margin-top:6px"><span class="chip on">On plan</span><span class="chip">1 drift alert</span></div>
+  </div>
+</div></div></section>
+
+<section class="feat"><div class="wrap"><div class="row reveal">
+  <div class="copy">
+    <span class="mono">// From the floor</span>
+    <h3 class="serif">Guidance before the <em>costly</em> moment.</h3>
+    <p>The gap between you and the market usually isn't your picks — it's the panic-sell and the chase-buy. A daily read and behavioral guardrails step in before those moments, not after.</p>
+  </div>
+  <div class="mock">
+    <div class="m-eyebrow">// Daily read · sample</div>
+    <div class="m-title serif">“Markets dipped 2%. Your plan doesn't change.”</div>
+    <p style="color:var(--fg-2);font-size:15px;max-width:none">Selling here would lock in a loss your timeline doesn't require. Sit tight — we'll flag it if that changes.</p>
+    <div style="margin-top:6px"><span class="chip on">Hold</span><span class="chip">Guardrail active</span></div>
+  </div>
+</div></div></section>
+
+<!-- WHO -->
+<section class="who"><div class="wrap reveal">
+  <div class="lead">
+    <span class="mono">// Who it's for</span>
+    <h2 class="serif">Built for who's <em>next</em>.</h2>
+    <p>The personal RIA for the 76 million investors too small for a human advisor and underserved by one-size robo-advisors — starting with the generation that actually wants this.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n r serif" data-count="19">0</div><div class="c">Average age Gen Z starts investing — vs 35 for boomers.</div></div>
+    <div class="stat"><div class="n a serif" data-count="40" data-suffix="%+">0</div><div class="c">Of Gen Z are comfortable with AI managing their money — vs 14% of boomers.</div></div>
+    <div class="stat"><div class="n g serif">$0</div><div class="c">Minimum to start. No gatekeeping, no advisor's velvet rope.</div></div>
+  </div>
+  <p class="mentality">Meet them at their first dollar — and grow with them for decades.</p>
+</div></section>
+
+<!-- HOW -->
+<section class="how"><div class="wrap reveal">
+  <div class="steps">
+    <div class="step"><div class="num">01</div><h4 class="serif">Profile you</h4><p>Goals, risk, horizon, capital — and how you behave under pressure.</p></div>
+    <div class="step"><div class="num">02</div><h4 class="serif">Score the fit</h4><p>Every security measured against your profile, not the market's.</p></div>
+    <div class="step"><div class="num">03</div><h4 class="serif">Build &amp; manage</h4><p>A personalized portfolio, kept aligned as life and markets move.</p></div>
+    <div class="step"><div class="num">04</div><h4 class="serif">Guide &amp; protect</h4><p>A daily read and guardrails that keep you on your own plan.</p></div>
+  </div>
+</div></section>
+
+<!-- JOIN -->
+<section class="join" id="join"><div class="wrap reveal">
+  <span class="mono">// Join</span>
+  <h2 class="serif" style="margin-top:18px">See you on the <em>floor</em>.</h2>
+  <p>Join the waitlist for early access. We're bringing people in as we open the platform — the early crew gets in first.</p>
+  <div id="wlmount">
+    <form id="wlf" novalidate>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+      <div class="field"><label>First name</label><input type="text" name="name" autocomplete="given-name" placeholder="Alex" aria-label="First name" required></div>
+      <div class="field"><label>Email</label><input type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@email.com" aria-label="Email address" required></div>
+      <div class="field"><label>Where are you, investing-wise?</label><select name="experience" aria-label="Investing experience"><option value="" disabled selected>Select one…</option><option>New to investing</option><option>Some experience</option><option>Active investor</option></select></div>
+      <div class="field"><label>What are you investing toward?</label><select name="goal" aria-label="Investing goal"><option value="" disabled selected>Select one…</option><option>Building long-term wealth</option><option>Retirement</option><option>A specific goal — home, etc.</option><option>Just learning for now</option></select></div>
+      <button class="btn red full" type="submit">Join the waitlist <span class="arr">→</span></button>
+    </form>
+  </div>
+  <div class="tiny">No spam · just your spot</div>
+</div></section>
+
+<section class="contact" id="contact"><div class="wrap"><div class="grid reveal">
+  <div>
+    <span class="mono">// Contact</span>
+    <h2 class="serif">Let's <em>talk</em>.</h2>
+    <p>Questions, press, or partnerships — we read everything. Investors and potential partners, reach out directly and we'll get back fast.</p>
+    <div class="emails">
+      <a href="mailto:team@trading-floor.ai"><b>All inquiries</b><em>team@trading-floor.ai</em></a>
+    </div>
+  </div>
+  <div>
+    <div id="cfmount">
+      <form id="cf" novalidate>
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+        <input type="text" name="name" autocomplete="name" placeholder="Your name" aria-label="Your name" required>
+        <input type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@email.com" aria-label="Your email" required>
+        <textarea name="message" placeholder="What's on your mind?" aria-label="Message" required></textarea>
+        <button class="btn red" type="submit">Send message <span class="arr">→</span></button>
+      </form>
+    </div>
+  </div>
+</div></div></section>
+
+<footer><div class="wrap">
+  <div class="top">
+    <div>
+      <span class="brand"><svg viewBox="14 22 92 92" width="24" height="24" aria-hidden="true"><path d="M 18 26 L 102 26 L 96 38 L 24 38 Z" fill="#16130E"/><path d="M 60 38 L 69 52 L 60 110 L 51 52 Z" fill="#16130E"/></svg> Trading<span class="dash" style="color:var(--red)">—</span>Floor</span>
+      <div class="tag">For the retail investor, by the retail investor.</div>
+    </div>
+    <div class="links">
+      <a data-goto="#top">Top</a>
+      <a data-goto="#join">Waitlist</a>
+      <a data-goto="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="disclaimer">Screens shown are illustrative samples, not live data or recommendations. Trading-Floor is pursuing registration as an investment adviser; the platform is not yet available to the public, and nothing here is investment advice or an offer of securities. Tickers shown are for demonstration only.</div>
+  <div class="copy">© 2026 Trading-Floor. All rights reserved.</div>
+</div></footer>
+
+<script>
+const CONFIG={FORMSPREE:'https://formspree.io/f/xnjyqbgw',API_BASE:'',STRIPE_FOUNDING_LINK:''};
+function track(ev,p){const r={event:ev,payload:p||{},ts:new Date().toISOString()};if(CONFIG.API_BASE)fetch(CONFIG.API_BASE+'/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(r)}).catch(()=>{});console.log('[TF]',ev,r.payload);}
+function postPublic(path,body){if(CONFIG.API_BASE){return fetch(CONFIG.API_BASE+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).catch(()=>{});}return Promise.resolve();}
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* living background: flowing market field (mouse-reactive) */
+(function(){
+  var c=document.getElementById('bg'); if(!c)return; var ctx=c.getContext('2d');
+  var DPR=Math.min(window.devicePixelRatio||1,2), W=0,H=0, t=0, lines=[];
+  var mx=-1e4,my=-1e4, ex=-1e4,ey=-1e4;
+  function build(){
+    W=c.width=Math.floor(innerWidth*DPR); H=c.height=Math.floor(innerHeight*DPR);
+    c.style.width=innerWidth+'px'; c.style.height=innerHeight+'px';
+    lines=[]; var N=9;
+    for(var i=0;i<N;i++){
+      var accent=(i===2)?'#C8442A':(i===5)?'#C68B3C':(i===7)?'#2E6B4D':null;
+      lines.push({
+        yf:(i+0.5)/N, amp:(22+Math.random()*30)*DPR, k:(0.6+Math.random()*0.9),
+        sp:0.0013+Math.random()*0.0016, ph:Math.random()*6.283,
+        col:accent||'#16130E', a:accent?(0.15+Math.random()*0.07):(0.05+Math.random()*0.035),
+        w:(accent?1.6:1.05)*DPR, glow:accent?(13*DPR):0
+      });
+    }
+  }
+  function drawLine(L,anim){
+    var baseY=L.yf*H, step=Math.max(9,Math.round(12*DPR)), sig=175*DPR;
+    ctx.beginPath();
+    for(var x=0;x<=W;x+=step){
+      var y=baseY+Math.sin(x*L.k/180+L.ph+(anim?t*L.sp*60:0))*L.amp;
+      if(ex>-9e3){var dx=x-ex; y-=(baseY-ey)*0.22*Math.exp(-(dx*dx)/(2*sig*sig));}
+      if(x===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.globalAlpha=L.a; ctx.strokeStyle=L.col; ctx.lineWidth=L.w;
+    ctx.shadowBlur=L.glow; if(L.glow)ctx.shadowColor=L.col;
+    ctx.stroke(); ctx.shadowBlur=0;
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<lines.length;i++)drawLine(lines[i],true);
+    ctx.globalAlpha=1;
+    ex+=(mx-ex)*0.07; ey+=(my-ey)*0.07; t++;
+    requestAnimationFrame(frame);
+  }
+  build();
+  window.addEventListener('pointermove',function(e){mx=e.clientX*DPR; my=e.clientY*DPR; if(ex<-9e3){ex=mx;ey=my;}},{passive:true});
+  window.addEventListener('pointerout',function(){mx=-1e4;my=-1e4;ex=-1e4;ey=-1e4;});
+  var rt; window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(build,200);});
+  if(reduce){for(var i=0;i<lines.length;i++)drawLine(lines[i],false); ctx.globalAlpha=1;}
+  else requestAnimationFrame(frame);
+})();
+
+/* nav */
+var nav=document.getElementById('nav');
+function onScroll(){nav.classList.toggle('scrolled',window.scrollY>12);}
+onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
+/* smooth scroll */
+document.querySelectorAll('[data-goto]').forEach(function(el){
+  el.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(el.getAttribute('data-goto'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
+});
+
+/* reveal + matrix + counters */
+var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.16});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+var mio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('shown');mio.unobserve(en.target);}});},{threshold:.3});
+var mx=document.getElementById('matrix'); if(mx)mio.observe(mx);
+
+function animCount(el){
+  var target=+el.getAttribute('data-count'), suf=el.getAttribute('data-suffix')||'';
+  if(reduce){el.textContent=target+suf;return;}
+  var dur=1100, t0=performance.now();
+  function step(t){var k=Math.min(1,(t-t0)/dur); var v=Math.round(target*(1-Math.pow(1-k,3))); el.textContent=v+suf; if(k<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+var cio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){animCount(en.target);cio.unobserve(en.target);}});},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
+
+/* waitlist */
+function fsSend(payload){
+  if(!CONFIG.FORMSPREE)return Promise.resolve({ok:true});
+  return fetch(CONFIG.FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+    .then(function(r){return {ok:r.ok};}).catch(function(){return {ok:false};});
+}
+function showErr(f,msg){var e=f.querySelector('.ferr'); if(!e){e=document.createElement('div'); e.className='ferr'; f.appendChild(e);} e.textContent=msg;}
+
+function wlOk(n){return '<div class="wlok">You\u2019re on the list'+(n?', '+n.replace(/[<>&]/g,''):'')+'. \u2726<span>We\u2019ll email you when your spot opens. See you on the floor.</span></div>';}
+(function bindWl(){
+  var f=document.getElementById('wlf'); var mount=document.getElementById('wlmount'); if(!f)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var fd=new FormData(f);
+    var name=(fd.get('name')||'').toString().trim();
+    var email=(fd.get('email')||'').toString().trim();
+    function bad(sel){var el=f.querySelector(sel); if(el){el.focus(); el.style.borderColor='var(--red)';}}
+    if(!name){bad('[name=name]');return;}
+    if(!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){bad('[name=email]');return;}
+    var payload={_subject:'New waitlist signup — '+name, name:name, email:email, experience:(fd.get('experience')||'').toString(), goal:(fd.get('goal')||'').toString(), source:'waitlist'};
+    var btn=f.querySelector('button'), orig=btn.innerHTML; btn.disabled=true; btn.style.opacity='.65'; btn.textContent='Joining…';
+    track('waitlist_join',payload);
+    fsSend(payload).then(function(res){
+      if(res.ok){mount.innerHTML=wlOk(name);}
+      else{btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig; showErr(f,'Something went wrong. Please email team@trading-floor.ai');}
+    });
+  });
+})();
+
+function cfOk(){return '<div class="cfok">Message sent. \u2726<span>Thanks — we\u2019ll get back to you soon.</span></div>';}
+(function bindCf(){
+  var f=document.getElementById('cf'); var mount=document.getElementById('cfmount'); if(!f)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var fd=new FormData(f);
+    var name=(fd.get('name')||'').toString().trim();
+    var email=(fd.get('email')||'').toString().trim();
+    var message=(fd.get('message')||'').toString().trim();
+    function bad(sel){var el=f.querySelector(sel); if(el){el.focus(); el.style.borderColor='var(--red)';}}
+    if(!name){bad('[name=name]');return;}
+    if(!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){bad('[name=email]');return;}
+    if(!message){bad('[name=message]');return;}
+    var payload={_subject:'New contact message — '+name, name:name, email:email, message:message, source:'contact'};
+    var btn=f.querySelector('button'), orig=btn.innerHTML; btn.disabled=true; btn.style.opacity='.65'; btn.textContent='Sending…';
+    track('contact_submit',payload);
+    fsSend(payload).then(function(res){
+      if(res.ok){mount.innerHTML=cfOk();}
+      else{btn.disabled=false; btn.style.opacity=''; btn.innerHTML=orig; showErr(f,'Something went wrong. Please email team@trading-floor.ai');}
+    });
+  });
+})();
+track('view_landing');
+</script>
+</body>
+</html>
